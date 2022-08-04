@@ -59,7 +59,7 @@ int encrypt(char *imgPath, char *msg)
             }
             printf("%d\n ", encoded);
 
-            // encoded |= buf[2] & ~3;
+            encoded |= buf[2] & ~3;
             fwrite(&encoded, 1, 1, imageOut);
             mask >>= 2;
             shift--;
