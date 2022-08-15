@@ -72,7 +72,7 @@ int encrypt(char *imgPath, char *msg)
                 // Shift the bits to the right
                 encoded = encoded >> 2;
             }
-            printf("%d\n", encoded);
+            // printf("%d\n", encoded);
 
             // Set the rest of the bits to the original value
             encoded |= buf[2] & ~3;
