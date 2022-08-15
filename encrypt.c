@@ -44,6 +44,7 @@ int encrypt(char *imgPath, char *msg)
     buf = (char *)malloc(3);
     char encoded = 0;
     int i = 0;
+    //192 = 11000000
     int mask = 192;
     int shift = 3;
 
@@ -52,13 +53,16 @@ int encrypt(char *imgPath, char *msg)
         fwrite(buf, 1, 2, imageOut);
         if (msg[i] != '\0')
         {
+            // Set 2 bits of the character
             encoded = msg[i] & mask;
             for (int k = 0; k < shift; k++)
             {
+                // Shift the bits to the right
                 encoded = encoded >> 2;
             }
             printf("%d\n ", encoded);
 
+            // Set the rest of the bits to the original value
             encoded |= buf[2] & ~3;
             fwrite(&encoded, 1, 1, imageOut);
             mask >>= 2;
