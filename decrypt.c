@@ -26,6 +26,9 @@ int decrypt(char *imgPath) {
         decoded = (decoded & ~3) | (buf[2] & 3);
         if (k == 3)
         {
+            if (decoded == 0) {
+                break;
+            }
             printf("%c", decoded);
             k = 0;
             decoded = 0;

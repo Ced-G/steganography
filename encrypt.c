@@ -21,6 +21,17 @@ int encrypt(char *imgPath, char *msg)
         return 0;
     }
 
+    int width = getWidth(imageIn);
+    int height = getHeight(imageIn);
+    int maxlen = (width * height) / 4;
+    int msglen = strlen(msg);
+    if (msglen > maxlen)
+    {
+        fprintf(stderr, "Message is too long for image dimensions, Max size: %d, Msg size: %d\n", maxlen, msglen);
+        fclose(imageIn);
+        return 0;
+    }
+
     char *foutName = calloc(strlen(imgPath) + 5, sizeof(char));
     strcat(foutName, "enc_");
     strcpy(foutName + 4, imgPath);
@@ -51,7 +62,8 @@ int encrypt(char *imgPath, char *msg)
     while (fread(buf, 1, 3, imageIn))
     {
         fwrite(buf, 1, 2, imageOut);
-        if (msg[i] != '\0')
+        // if (msg[i] != '\0')
+        if (i <= msglen)
         {
             // Set 2 bits of the character
             encoded = msg[i] & mask;
@@ -60,7 +72,7 @@ int encrypt(char *imgPath, char *msg)
                 // Shift the bits to the right
                 encoded = encoded >> 2;
             }
-            printf("%d\n ", encoded);
+            printf("%d\n", encoded);
 
             // Set the rest of the bits to the original value
             encoded |= buf[2] & ~3;
